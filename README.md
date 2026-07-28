@@ -68,9 +68,9 @@ The ranking itself is trivial: sort items by `score DESC`, alphabetical `label` 
 
 ```bash
 python -m py_compile api_contract/*.py run_all.py verify.py
-python run_all.py          # writes results.jsonl, 26 cases
+python run_all.py          # writes results.jsonl and regenerates RESULTS.md from the same rows, 26 cases
 python verify.py           # asserts status, headers, body, canonical bytes
-python -m unittest test_api_contract -v   # independent unittest suite, 16 tests
+python -m unittest test_api_contract -v   # independent unittest suite, 21 tests
 ```
 
 ## Demos
@@ -87,8 +87,8 @@ python demo_json_error_stability.py       # JSONDecodeError messages vary, endpo
 |-------|-------|----------|
 | success | 6 | ok tie-break, query limit, empty items, limit=0, int score, duplicate labels |
 | json_parse | 3 | malformed JSON, non-json body, NaN rejected |
-| body_validation | 11 | wrong shape, missing/null fields, wrong types, unknown fields (top/item), bool limit, bool score |
-| query_validation | 6 | repeated limit, blank limit, non-int, negative, query/body limit conflict |
+| body_validation | 9 | wrong shape, missing/null fields, wrong types, unknown fields (top/item), bool limit, bool score |
+| query_validation | 5 | repeated limit, blank limit, non-int, negative, query/body limit conflict |
 | routing | 3 | GET→405, wrong path→404, wrong Content-Type→415 |
 
 See [RESULTS.md](RESULTS.md) for the full table.
