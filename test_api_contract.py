@@ -124,5 +124,66 @@ class TestAdapter(unittest.TestCase):
         self.assertEqual(status, 415)
 
 
+class TestManifest(unittest.TestCase):
+    """Manifest integrity tests – independent of run_all.py."""
+
+    def test_manifest_case_count(self):
+        import pathlib
+        manifest_path = pathlib.Path(__file__).parent / "cases" / "manifest.json"
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        self.assertEqual(len(manifest["cases"]), 26)
+
+    def test_manifest_case_ids_unique(self):
+        import pathlib
+        manifest_path = pathlib.Path(__file__).parent / "cases" / "manifest.json"
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        ids = [c["id"] for c in manifest["cases"]]
+        self.assertEqual(len(ids), len(set(ids)), "duplicate case_id found")
+
+    def test_manifest_case_id_set(self):
+        import pathlib
+        manifest_path = pathlib.Path(__file__).parent / "cases" / "manifest.json"
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        actual_ids = {c["id"] for c in manifest["cases"]}
+        expected_ids = {
+            "ok_01", "ok_02", "ok_03", "ok_limit0", "ok_score_int", "ok_dup_labels",
+            "bad_json_01", "bad_json_02", "bad_nan_01",
+            "bad_shape_01", "bad_shape_02", "bad_missing_01", "bad_null_01",
+            "bad_type_01", "bad_unknown_01", "bad_item_unknown_01",
+            "bad_bool_limit_01", "bad_bool_score_01",
+            "q_repeat_01", "q_blank_01", "q_type_01", "q_range_01", "limit_conflict_01",
+            "m_get_01", "p_404_01", "ct_01",
+        }
+        self.assertEqual(actual_ids, expected_ids)
+
+    def test_manifest_classification_distribution(self):
+        import pathlib
+        from collections import Counter
+        manifest_path = pathlib.Path(__file__).parent / "cases" / "manifest.json"
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        counts = Counter(c["classification"] for c in manifest["cases"])
+        self.assertEqual(counts["success"], 6)
+        self.assertEqual(counts["json_parse"], 3)
+        self.assertEqual(counts["body_validation"], 9)
+        self.assertEqual(counts["query_validation"], 5)
+        self.assertEqual(counts["routing"], 3)
+        self.assertEqual(sum(counts.values()), 26)
+
+    def test_manifest_every_case_has_classification(self):
+        import pathlib
+        manifest_path = pathlib.Path(__file__).parent / "cases" / "manifest.json"
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        allowed = {"success", "json_parse", "body_validation", "query_validation", "routing"}
+        for c in manifest["cases"]:
+            self.assertIn("classification", c, f"case {c['id']} missing classification")
+            self.assertIn(c["classification"], allowed,
+                          f"case {c['id']} has invalid classification {c['classification']!r}")
+
+
 if __name__ == "__main__":
     unittest.main()

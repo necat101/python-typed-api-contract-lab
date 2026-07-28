@@ -2,33 +2,40 @@
 
 Total cases: 26
 
-| case_id | status | expected | class | observation |
-|---------|--------|----------|-------|-------------|
-| ok_01 | 200 | 200 | success |  | ✓ |
-| ok_02 | 200 | 200 | success |  | ✓ |
-| ok_03 | 200 | 200 | success |  | ✓ |
-| ok_limit0 | 200 | 200 | success |  | ✓ |
-| ok_score_int | 200 | 200 | success |  | ✓ |
-| ok_dup_labels | 200 | 200 | success |  | ✓ |
-| bad_json_01 | 400 | 400 | json_parse | request body is not valid json | ✓ |
-| bad_shape_01 | 422 | 422 | body_validation | top_level must be object | ✓ |
-| bad_shape_02 | 422 | 422 | body_validation | items must be list | ✓ |
-| bad_missing_01 | 422 | 422 | body_validation | missing field: items | ✓ |
-| bad_null_01 | 422 | 422 | body_validation | items must be list | ✓ |
-| bad_type_01 | 422 | 422 | body_validation | item.label must be str | ✓ |
-| bad_unknown_01 | 422 | 422 | body_validation | unknown field: extra | ✓ |
-| bad_item_unknown_01 | 422 | 422 | body_validation | unknown field in item: extra | ✓ |
-| bad_bool_limit_01 | 422 | 422 | body_validation | limit must be integer | ✓ |
-| bad_bool_score_01 | 422 | 422 | body_validation | item.score must be finite number | ✓ |
-| bad_nan_01 | 400 | 400 | body_validation | request body is not valid json | ✓ |
-| q_repeat_01 | 422 | 422 | query_validation | limit: repeated parameter | ✓ |
-| q_blank_01 | 422 | 422 | query_validation | limit: blank value | ✓ |
-| q_type_01 | 422 | 422 | query_validation | limit: not an integer | ✓ |
-| q_range_01 | 422 | 422 | query_validation | limit: must be >= 0 | ✓ |
-| limit_conflict_01 | 422 | 422 | query_validation | limit present in both query and body | ✓ |
-| m_get_01 | 405 | 405 | routing | method_not_allowed | ✓ |
-| p_404_01 | 404 | 404 | routing | not_found | ✓ |
-| ct_01 | 415 | 415 | routing | unsupported_media_type | ✓ |
-| bad_json_02 | 400 | 400 | json_parse | request body is not valid json | ✓ |
+| case_id | classification | status | expected | pass | observation |
+|---------|----------------|--------|----------|------|-------------|
+| ok_01 | success | 200 | 200 | ✓ |  |
+| ok_02 | success | 200 | 200 | ✓ |  |
+| ok_03 | success | 200 | 200 | ✓ |  |
+| ok_limit0 | success | 200 | 200 | ✓ |  |
+| ok_score_int | success | 200 | 200 | ✓ |  |
+| ok_dup_labels | success | 200 | 200 | ✓ |  |
+| bad_json_01 | json_parse | 400 | 400 | ✓ | request body is not valid json |
+| bad_json_02 | json_parse | 400 | 400 | ✓ | request body is not valid json |
+| bad_nan_01 | json_parse | 400 | 400 | ✓ | request body is not valid json |
+| bad_shape_01 | body_validation | 422 | 422 | ✓ | top_level must be object |
+| bad_shape_02 | body_validation | 422 | 422 | ✓ | items must be list |
+| bad_missing_01 | body_validation | 422 | 422 | ✓ | missing field: items |
+| bad_null_01 | body_validation | 422 | 422 | ✓ | items must be list |
+| bad_type_01 | body_validation | 422 | 422 | ✓ | item.label must be str |
+| bad_unknown_01 | body_validation | 422 | 422 | ✓ | unknown field: extra |
+| bad_item_unknown_01 | body_validation | 422 | 422 | ✓ | unknown field in item: extra |
+| bad_bool_limit_01 | body_validation | 422 | 422 | ✓ | limit must be integer |
+| bad_bool_score_01 | body_validation | 422 | 422 | ✓ | item.score must be finite number |
+| q_repeat_01 | query_validation | 422 | 422 | ✓ | limit: repeated parameter |
+| q_blank_01 | query_validation | 422 | 422 | ✓ | limit: blank value |
+| q_type_01 | query_validation | 422 | 422 | ✓ | limit: not an integer |
+| q_range_01 | query_validation | 422 | 422 | ✓ | limit: must be >= 0 |
+| limit_conflict_01 | query_validation | 422 | 422 | ✓ | limit present in both query and body |
+| m_get_01 | routing | 405 | 405 | ✓ | method_not_allowed |
+| p_404_01 | routing | 404 | 404 | ✓ | not_found |
+| ct_01 | routing | 415 | 415 | ✓ | unsupported_media_type |
 
 Passed: 26 / 26
+
+Distribution:
+- success: 6
+- json_parse: 3
+- body_validation: 9
+- query_validation: 5
+- routing: 3
